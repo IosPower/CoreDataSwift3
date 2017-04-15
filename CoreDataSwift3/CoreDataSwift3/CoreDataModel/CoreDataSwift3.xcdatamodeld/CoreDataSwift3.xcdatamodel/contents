@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16A323" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Department" representedClassName=".Department" syncable="YES">
+        <attribute name="empDepartment" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="department" inverseEntity="Employee" syncable="YES"/>
+    </entity>
+    <entity name="Employee" representedClassName=".Employee" syncable="YES">
+        <attribute name="empDepartment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="empId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="empImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="empName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="empSalary" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="empStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="empSurname" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="department" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Department" inverseName="employee" inverseEntity="Department" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="employee" inverseEntity="Location" syncable="YES"/>
+        <relationship name="status" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Status" inverseName="employee" inverseEntity="Status" syncable="YES"/>
+    </entity>
+    <entity name="Location" representedClassName=".Location" syncable="YES">
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="employee" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Employee" inverseName="location" inverseEntity="Employee" syncable="YES"/>
+    </entity>
+    <entity name="Status" representedClassName=".Status" syncable="YES">
+        <attribute name="isAvailable" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="status" inverseEntity="Employee" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Department" positionX="313" positionY="-48" width="128" height="73"/>
+        <element name="Employee" positionX="72" positionY="18" width="128" height="195"/>
+        <element name="Location" positionX="288" positionY="141" width="128" height="75"/>
+        <element name="Status" positionX="-180" positionY="153" width="128" height="73"/>
+    </elements>
+</model>
