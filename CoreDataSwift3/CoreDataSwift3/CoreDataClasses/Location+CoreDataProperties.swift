@@ -29,11 +29,4 @@ extension Location {
 
     @objc(removeEmployeeObject:)
     @NSManaged public func removeFromEmployee(_ value: Employee)
-
-    @objc(addEmployee:)
-    @NSManaged public func addToEmployee(_ values: NSSet)
-
-    @objc(removeEmployee:)
-    @NSManaged public func removeFromEmployee(_ values: NSSet)
-
 }

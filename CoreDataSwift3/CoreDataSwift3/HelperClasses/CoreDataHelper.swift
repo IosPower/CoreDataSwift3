@@ -11,9 +11,11 @@ import CoreData
 
 class CoreDataHelper: NSObject {
 
-    // MARK: - Core Data stack
-   let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    static let coreDataHelper = CoreDataHelper()
     
+    private override init() {}
+    
+    // MARK: - Core Data stack
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -59,8 +61,8 @@ class CoreDataHelper: NSObject {
     
     func saveData(entityName: String, dicParameter: NSDictionary) {
         // SAVE DATA
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedObjectContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        
+        let managedObjectContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: entityName, in: managedObjectContext)
         
         let managedObject = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
@@ -79,8 +81,8 @@ class CoreDataHelper: NSObject {
     
     
     func getEntityObjectForRelation(entityName: String, dicParameter: NSDictionary)-> NSManagedObject {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedObjectContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        
+        let managedObjectContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: entityName, in: managedObjectContext)
         
         let managedObject = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
@@ -95,8 +97,8 @@ class CoreDataHelper: NSObject {
     
     func updateData(entityName: String, dicParameter: NSDictionary, objforUpdate: NSManagedObject) {
         // updateData
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedObjectContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        
+        let managedObjectContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         for (key, value) in dicParameter {
             let strKey = key as! String
             objforUpdate.setValue(value, forKey: strKey)
@@ -112,11 +114,11 @@ class CoreDataHelper: NSObject {
 
 //MARK:- Employee GetData
 extension Employee {
-    public class func getDataFromEmployee()->[Employee] {
+     class func getDataFromEmployee()->[Employee] {
         // GET DATA
         var arrayEmployee = [Employee]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        
+        let managedContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Employee> = Employee.fetchRequest()
         do {
             let results = try managedContext.fetch(fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
@@ -127,11 +129,10 @@ extension Employee {
         return arrayEmployee
     }
 
-    public class func getFilteredDataFromEmployee(dicForFilter: NSDictionary?)->[Employee] {
+    class func getFilteredDataFromEmployee(dicForFilter: NSDictionary?)->[Employee] {
         // GET DATA
         var arrayEmployee = [Employee]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        let managedContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Employee> = Employee.fetchRequest()
         do {
             if dicForFilter != nil {
@@ -159,11 +160,10 @@ extension Employee {
 
 //MARK:- Department GetData
 extension Department {
-    public class func getDataFromDepartment()->[Department] {
+     class func getDataFromDepartment()->[Department] {
         // GET DATA
         var arrayCategory = [Department]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        let managedContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Department> = Department.fetchRequest()
         do {
             let results = try managedContext.fetch(fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
@@ -177,11 +177,10 @@ extension Department {
 
 //MARK:- Status GetData
 extension Status {
-    public class func getDataFromStatus()->[Status] {
+     class func getDataFromStatus()->[Status] {
         // GET DATA
         var arrayStatus = [Status]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        let managedContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Status> = Status.fetchRequest()
         do {
             let results = try managedContext.fetch(fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
@@ -195,11 +194,10 @@ extension Status {
 
 //MARK:- Location GetData
 extension Location {
-    public class func getDataFromLocation()->[Location] {
+     class func getDataFromLocation()->[Location] {
         // GET DATA
         var arrayLocation = [Location]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+        let managedContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
         do {
             let results = try managedContext.fetch(fetchRequest as! NSFetchRequest<NSFetchRequestResult>)

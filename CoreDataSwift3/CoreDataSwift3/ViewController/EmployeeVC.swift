@@ -85,13 +85,13 @@ extension EmployeeVC: UITableViewDelegate {
         return true
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            appDelegate.coredataHelperobj.saveContext()
-            let managedObjectContext = appDelegate.coredataHelperobj.persistentContainer.viewContext
+            CoreDataHelper.coreDataHelper.saveContext()
+            let managedObjectContext = CoreDataHelper.coreDataHelper.persistentContainer.viewContext
             let deleteObj = arrayEmployee[indexPath.row]
             managedObjectContext.delete(deleteObj)
-            appDelegate.coredataHelperobj.saveContext()
+            CoreDataHelper.coreDataHelper.saveContext()
             getEmpData()
         }
     }

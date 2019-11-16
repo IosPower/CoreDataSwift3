@@ -23,8 +23,6 @@ class AddDetailsVC: UIViewController {
     var strStatus : String = String()
     var strImgpath : String = String()
     
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
     lazy var arrayEmployee = [Employee]()
     lazy var arrayCategory = [Department]()
     lazy var arrayLocation = [Location]()
@@ -58,22 +56,22 @@ class AddDetailsVC: UIViewController {
     //MARK:- Keyboard Methods
     func registerForKeyboardNotifications(){
         //Adding notifies on keyboard appearing
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func deregisterFromKeyboardNotifications(){
         //Removing notifies on keyboard appearing
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    func keyboardWasShown(notification: NSNotification){
+    @objc func keyboardWasShown(notification: NSNotification){
         //Need to calculate keyboard exact size due to Apple suggestions
         self.scrollView.isScrollEnabled = true
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+        let info = notification.userInfo!
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize!.height, right: 0.0)
         
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
@@ -87,11 +85,11 @@ class AddDetailsVC: UIViewController {
         }
     }
     
-    func keyboardWillBeHidden(notification: NSNotification){
+    @objc func keyboardWillBeHidden(notification: NSNotification){
         //Once keyboard disappears, restore original positions
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+        let info = notification.userInfo!
+        let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets : UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: -keyboardSize!.height, right: 0.0)
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
         self.view.endEditing(true)
@@ -108,10 +106,10 @@ class AddDetailsVC: UIViewController {
                 
                let dicLoca = ["city": txtCity.text! as NSString]
                 
-               let objnew =  self.appDelegate.coredataHelperobj.getEntityObjectForRelation(entityName: "Location", dicParameter: dicLoca as NSDictionary)
+                let objnew =  CoreDataHelper.coreDataHelper.getEntityObjectForRelation(entityName: "Location", dicParameter: dicLoca as NSDictionary)
         
                 let dicEmployeeDetails = ["empName": txtName.text!, "empSurname": txtSurname.text! , "empDepartment": txtDepartment.text!, "empSalary": txtSalary.text! as String,"empImage": strImgpath, "empStatus": strStatus, "empId": Int16(empid), "location": objnew] as [String : Any]
-                self.appDelegate.coredataHelperobj.saveData(entityName: "Employee", dicParameter: dicEmployeeDetails as NSDictionary)
+                CoreDataHelper.coreDataHelper.saveData(entityName: "Employee", dicParameter: dicEmployeeDetails as NSDictionary)
                 _ = self.navigationController?.popViewController(animated: true)
             }
             else {
@@ -120,10 +118,10 @@ class AddDetailsVC: UIViewController {
                     
                     let dicLoca = ["city": txtCity.text! as NSString]
                     
-                    let objnew =  self.appDelegate.coredataHelperobj.getEntityObjectForRelation(entityName: "Location", dicParameter: dicLoca as NSDictionary)
+                    let objnew =  CoreDataHelper.coreDataHelper.getEntityObjectForRelation(entityName: "Location", dicParameter: dicLoca as NSDictionary)
                     
                     let dicEmployeeDetails = ["empName": txtName.text!, "empSurname": txtSurname.text! , "empDepartment": txtDepartment.text!, "empSalary": txtSalary.text! as String,"empImage": strImgpath, "empStatus": strStatus, "empId": empid ?? "","location": objnew] as [String : Any]
-                    self.appDelegate.coredataHelperobj.updateData(entityName: "Employee", dicParameter: dicEmployeeDetails as NSDictionary, objforUpdate: empObj)
+                    CoreDataHelper.coreDataHelper.updateData(entityName: "Employee", dicParameter: dicEmployeeDetails as NSDictionary, objforUpdate: empObj)
                     _ = self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -271,12 +269,12 @@ extension AddDetailsVC: UITextFieldDelegate {
 class TextFieldPadding: UITextField {
     let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, padding)
+        return bounds.inset(by: padding)
     }
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, padding)
+        return bounds.inset(by: padding)
     }
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, padding)
+        return bounds.inset(by: padding)
     }
 }
